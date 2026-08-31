@@ -1,0 +1,9 @@
+# Working notes, drafts, source PDFs, and private correspondence. Everything
+# that is not part of the published artefact lives in here, so one rule keeps
+# the whole lot out of the repository.
+notes/
+
+__pycache__/
+*.pyc
+.DS_Store
+.venv/

@@ -1,0 +1,11 @@
+# The image copies files explicitly, so nothing here reaches it either way.
+# This is the second lock: if COPY is ever loosened to `COPY . .`, the working
+# notes, the source paper, and the private correspondence must still stay out
+# of a shareable image.
+notes/
+*.ipynb
+*.pdf
+.*.prev*
+.*.backup
+__pycache__/
+.git/

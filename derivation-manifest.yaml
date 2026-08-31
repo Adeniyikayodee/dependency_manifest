@@ -1,0 +1,630 @@
+# ============================================================================
+#  derives-from/0.2  —  a dependency manifest for public statistical products
+# ============================================================================
+#
+#  Public data catalogues record isProvidedBy (which file a number arrived in).
+#  None record derivesFrom (what the number was computed from). Without that
+#  edge, a covariate that is an ancestor of your target is indistinguishable
+#  from an independent signal.
+#
+#  This file is a hand-built, evidence-tagged prototype of the missing edge.
+#  It is deliberately incomplete. Every edge carries an honest confidence
+#  level, and every product that carries edges records the evidence behind
+#  them, because an unaudited lineage graph would reproduce the exact problem
+#  it is meant to solve.
+#
+#  relation:
+#    identity        B *is* A, republished under another name
+#    component       A is a mathematical ingredient of B
+#    modelled_from   A is a covariate in the statistical model producing B
+#    poststratified_on  A supplies the population weights B is raked to
+#    denominator     A is the denominator when B is expressed as a rate
+#
+#  measurementBasis:
+#    measured        direct enumeration, survey, sensor, or registry
+#    modelled        output of a statistical or ML model
+#    composite       deterministic arithmetic over other published products
+#
+#  confidence:
+#    certain         formula published, or inputs and outputs ship together
+#    documented      stated in the producer's own methodology
+#    inferred        strongly implied but not verbatim; treat as provisional
+#
+#  coPublishedNonInputs:
+#    Variables that ship in the SAME FILE as the product and are NOT inputs
+#    to it, directly or transitively. Use it sparingly: an entry here tells
+#    the linter to CLEAR a covariate, so a wrong entry is a false clearance,
+#    which is worse than no linter at all.
+#
+#    This field has now produced an error in both directions, both from the
+#    same habit of reading a delivered file instead of a methodology. v0.1
+#    recorded EP_NOINT as a `component` at `certain` when it is not ranked at
+#    all. A later pass then over-corrected, listing all eight non-ranked SVI
+#    columns here as safe; seven of them sum exactly to EP_MINRTY, which is
+#    Theme 3, so they are ancestors of the index two hops up. EP_NOINT is the
+#    only member of the eight that genuinely qualifies.
+# ============================================================================
+
+schema: derives-from/0.2
+generated: 2026-08-30
+note: >
+  Prototype across US and global public data infrastructure. Coverage is
+  illustrative, not exhaustive. Claims removed or rewritten on verification
+  are recorded as `correction:` fields rather than deleted silently. Version
+  0.2 corrects six errors found by auditing v0.1 against primary sources;
+  four of them were in edges v0.1 had marked `certain` or `documented`.
+  A later pass fixed one more, of a different kind: seven of the eight entries
+  in CDC_SVI.RPL_THEMES.coPublishedNonInputs were written without their `ACS.`
+  prefix, so they resolved to no product at all and the near-miss note they
+  exist to raise could never fire. They are now defined as products and the
+  linter's self-check validates this field too, so it cannot recur silently.
+
+products:
+
+  # ---------------------------------------------------------------- measured
+  # The 16 ACS variables that are percentile-ranked into the CDC SVI themes.
+  # Verified against the delivered file: SVI 2022 California tract CSV carries
+  # 24 EP_* columns but only 16 EPL_* percentile ranks. The 16 below are those.
+  ACS.EP_POV150:
+    label: Population below 150% of federal poverty level
+    provider: US Census Bureau — American Community Survey
+    measurementBasis: measured
+    isProvidedBy: https://api.census.gov/data/2023/acs/acs5
+    derivesFrom: []
+
+  ACS.EP_UNEMP:      {label: Unemployment rate, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_HBURD:      {label: Housing cost burden, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_NOHSDP:     {label: No high-school diploma, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_UNINSUR:    {label: Uninsured, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_AGE65:      {label: Aged 65 and over, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_AGE17:      {label: Aged 17 and under, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_DISABL:     {label: Civilian non-institutionalised population with a disability, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_SNGPNT:     {label: Single-parent household with children under 18, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_LIMENG:     {label: Limited-English-speaking household, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_MINRTY:
+    label: Racial and ethnic minority status
+    provider: US Census Bureau
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: ACS.EP_AFAM,      relation: component, confidence: certain}
+      - {variable: ACS.EP_HISP,      relation: component, confidence: certain}
+      - {variable: ACS.EP_ASIAN,     relation: component, confidence: certain}
+      - {variable: ACS.EP_AIAN,      relation: component, confidence: certain}
+      - {variable: ACS.EP_NHPI,      relation: component, confidence: certain}
+      - {variable: ACS.EP_TWOMORE,   relation: component, confidence: certain}
+      - {variable: ACS.EP_OTHERRACE, relation: component, confidence: certain}
+    evidence: >
+      Measured against the delivered file rather than taken from documentation:
+      E_MINRTY equals the sum of the seven race and ethnicity counts exactly, in
+      all 9,109 California tracts of SVI 2022, with a maximum absolute
+      difference of zero. The published EP_ percentages agree to within 0.2
+      percentage points, which is rounding. The seven reconstruct EP_MINRTY at
+      cross-validated R2 = 0.994 and RPL_THEME3 at R2 = 0.992.
+    correction: >
+      An earlier pass recorded all seven of these as `coPublishedNonInputs` of
+      CDC_SVI.RPL_THEMES, meaning shipped alongside the index and safe to use.
+      That was wrong. They are not ranked individually, but they sum exactly to
+      EP_MINRTY, which is the sole input to Theme 3, so each of them is an
+      ancestor of the overall index two hops up. The linter was therefore
+      clearing them as safe covariates for an SVI target, which is a false
+      clearance of exactly the kind this tool exists to prevent. Only
+      ACS.EP_NOINT remains a genuine co-published non-input: it reaches
+      RPL_THEMES at R2 = 0.384 on its own, which is correlation, and it is a
+      component of no ranked SVI variable.
+  ACS.EP_MUNIT:      {label: Housing in structures with 10 or more units, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_MOBILE:     {label: Mobile homes, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_CROWD:      {label: Unit-level crowding (more people than rooms), provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_NOVEH:      {label: No vehicle available, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_GROUPQ:     {label: Population in group quarters, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+
+  # Published in the SVI file, but NOT part of the index. See CDC_SVI.RPL_THEMES.
+  ACS.EP_NOINT:
+    label: No broadband internet access
+    provider: US Census Bureau
+    measurementBasis: measured
+    derivesFrom: []
+    comment: >
+      An SVI *adjunct* variable: shipped in the same CSV as the index, absent
+      from the ranking. It is nonetheless a real ancestor of FEMA's social
+      vulnerability layer, via the Census Community Resilience Estimates, which
+      does count broadband access among its ten components. Right variable,
+      wrong parent — which is precisely why the parent has to be recorded.
+
+  # The seven race and ethnicity counts. Never ranked individually, and NOT
+  # co-published non-inputs: they sum exactly to EP_MINRTY, which is Theme 3.
+  # See the correction on ACS.EP_MINRTY.
+  ACS.EP_AFAM:       {label: Black and African American, non-Hispanic, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_HISP:       {label: Hispanic or Latino of any race, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_ASIAN:      {label: Asian, non-Hispanic, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_AIAN:       {label: American Indian and Alaska Native, non-Hispanic, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_NHPI:       {label: Native Hawaiian and Other Pacific Islander, non-Hispanic, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_TWOMORE:    {label: Two or more races, non-Hispanic, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+  ACS.EP_OTHERRACE:  {label: Other races, non-Hispanic, provider: US Census Bureau, measurementBasis: measured, derivesFrom: []}
+
+  ACS.tenure_homeownership:
+    label: Owner-occupied housing units (ACS table B25003)
+    provider: US Census Bureau
+    measurementBasis: measured
+    derivesFrom: []
+
+  CBP.business_patterns:
+    label: County Business Patterns establishment counts
+    provider: US Census Bureau
+    measurementBasis: measured
+    derivesFrom: []
+
+  BRFSS:
+    label: Behavioral Risk Factor Surveillance System
+    provider: CDC
+    measurementBasis: measured
+    derivesFrom: []
+
+  CENSUS.blocks:
+    label: Decennial census block population and demographics
+    provider: US Census Bureau
+    measurementBasis: measured
+    derivesFrom: []
+
+  SAT.sentinel_landsat:
+    label: Sentinel-1/2 and Landsat surface reflectance
+    provider: ESA / USGS
+    measurementBasis: measured
+    derivesFrom: []
+
+  SAT.viirs_ntl:
+    label: VIIRS Day/Night Band nighttime lights radiance
+    provider: NOAA / NASA
+    measurementBasis: measured
+    derivesFrom: []
+
+  SAT.modis_ndvi:
+    label: MODIS vegetation index
+    provider: NASA
+    measurementBasis: measured
+    derivesFrom: []
+
+  SAT.palsar2:       {label: ALOS PALSAR-2 L-band SAR, provider: JAXA, measurementBasis: measured, derivesFrom: []}
+  SAT.gedi_canopy:   {label: GEDI raster canopy height, provider: NASA, measurementBasis: measured, derivesFrom: []}
+  SAT.glo30_dem:     {label: Copernicus GLO-30 digital elevation model, provider: ESA, measurementBasis: measured, derivesFrom: []}
+  SAT.era5_land:     {label: ERA5-Land reanalysis, provider: ECMWF, measurementBasis: measured, derivesFrom: []}
+  SAT.grace:         {label: GRACE / GRACE-FO gravity mass grids, provider: NASA / GFZ, measurementBasis: measured, derivesFrom: []}
+  SAT.chirps_rainfall: {label: CHIRPS precipitation, provider: UCSB Climate Hazards Center, measurementBasis: measured, derivesFrom: []}
+
+  NLCD.landcover:
+    label: National Land Cover Database
+    provider: USGS / MRLC
+    measurementBasis: modelled
+    derivesFrom:
+      - {variable: SAT.sentinel_landsat, relation: modelled_from, confidence: documented}
+    evidence: >
+      Decision-tree classification of multi-season 30 m Landsat imagery with
+      curated training labels (Wickham et al. 2014, 2023). Listed here because
+      AlphaEarth ingests NLCD as weak supervision, which makes any NLCD-derived
+      covariate a sibling of AlphaEarth embeddings rather than an independent one.
+
+  HYDE.population_grid:
+    label: HYDE 3.x gridded historical population
+    provider: PBL Netherlands Environmental Assessment Agency
+    measurementBasis: modelled
+    derivesFrom: []
+
+  NVSS.mortality:
+    label: Death-certificate mortality registry
+    provider: CDC / NCHS
+    measurementBasis: measured
+    derivesFrom: []
+    comment: >
+      One of the few fine-grained public health targets that is a complete
+      enumeration rather than a model output. Published county rates are
+      spatially smoothed, but the smoothing is neighbour-based, not
+      covariate-based — so it shares no lineage with ACS.
+
+  WFP.household_surveys:
+    label: WFP household food-consumption surveys (FCS / FCG / rCSI)
+    provider: World Food Programme — VAM
+    measurementBasis: measured
+    derivesFrom: []
+
+  WORLDBANK.food_prices:
+    label: Global food price indices
+    provider: World Bank / WFP VAM
+    measurementBasis: measured
+    derivesFrom: []
+
+  # ----------------------------------------------------- modelled / composite
+  CDC_SVI.RPL_THEME1:
+    label: SVI Theme 1 — Socioeconomic Status percentile rank
+    provider: CDC / ATSDR
+    measurementBasis: composite
+    isProvidedBy: https://svi.cdc.gov/
+    derivesFrom:
+      - {variable: ACS.EP_POV150,   relation: component, confidence: certain}
+      - {variable: ACS.EP_UNEMP,    relation: component, confidence: certain}
+      - {variable: ACS.EP_HBURD,    relation: component, confidence: certain}
+      - {variable: ACS.EP_NOHSDP,   relation: component, confidence: certain}
+      - {variable: ACS.EP_UNINSUR,  relation: component, confidence: certain}
+    evidence: >
+      Defined as the percentile rank of the summed percentile ranks of these
+      five ACS variables. The published state CSVs carry the EP_* inputs and
+      the RPL_* outputs in the same file. Reconstructed from its own inputs at
+      cross-validated R2 = 0.998 (9,041 California tracts, SVI 2022, five-fold
+      HistGradientBoostingRegressor; see reproduce_svi.py). Figures are quoted
+      to three decimals because the fourth moves with the scikit-learn version;
+      they are stable across 1.3.2 to 1.9.0.
+    correction: >
+      v0.1 described this theme using the SVI 2018 variable set in places. The
+      five variables above are the SVI 2020/2022 set, confirmed against the
+      delivered file: EP_HBURD is present, and no per-capita-income column
+      exists in SVI 2020 or later.
+
+  CDC_SVI.RPL_THEME2:
+    label: SVI Theme 2 — Household Characteristics percentile rank
+    provider: CDC / ATSDR
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: ACS.EP_AGE65,  relation: component, confidence: certain}
+      - {variable: ACS.EP_AGE17,  relation: component, confidence: certain}
+      - {variable: ACS.EP_DISABL, relation: component, confidence: certain}
+      - {variable: ACS.EP_SNGPNT, relation: component, confidence: certain}
+      - {variable: ACS.EP_LIMENG, relation: component, confidence: certain}
+    evidence: >
+      Percentile rank of the summed percentile ranks of these five ACS
+      variables. CDC's SVI documentation assigns these five to Theme 2, and
+      the delivered file carries one EPL_* column for each, so inputs and
+      outputs ship together and the edge is checkable without leaving the
+      CSV. Reconstructed from its own inputs at cross-validated
+      R2 = 0.992 (9,042 California tracts, SVI 2022; see reproduce_svi.py).
+
+  CDC_SVI.RPL_THEME3:
+    label: SVI Theme 3 — Racial and Ethnic Minority Status percentile rank
+    provider: CDC / ATSDR
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: ACS.EP_MINRTY, relation: component, confidence: certain}
+    evidence: >
+      Theme 3 is a single-variable theme in SVI 2020 and later: one ranked
+      input, EPL_MINRTY. The relationship is an exact rank transform rather
+      than an approximation, with a Spearman correlation of 1.000000 between
+      EP_MINRTY and RPL_THEME3 across 9,080 California tracts and
+      cross-validated R2 = 1.000 from that single input (see
+      reproduce_svi.py). This edge is why the seven race and ethnicity
+      columns that sum to E_MINRTY are ancestors of the overall index two
+      hops up rather than bystanders published beside it.
+
+  CDC_SVI.RPL_THEME4:
+    label: SVI Theme 4 — Housing Type and Transportation percentile rank
+    provider: CDC / ATSDR
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: ACS.EP_MUNIT,  relation: component, confidence: certain}
+      - {variable: ACS.EP_MOBILE, relation: component, confidence: certain}
+      - {variable: ACS.EP_CROWD,  relation: component, confidence: certain}
+      - {variable: ACS.EP_NOVEH,  relation: component, confidence: certain}
+      - {variable: ACS.EP_GROUPQ, relation: component, confidence: certain}
+    evidence: >
+      Percentile rank of the summed percentile ranks of these five ACS
+      variables. CDC's SVI documentation assigns these five to Theme 4, and
+      the delivered file carries one EPL_* column for each, so inputs and
+      outputs ship together and the edge is checkable without leaving the
+      CSV. Reconstructed from its own inputs at cross-validated
+      R2 = 0.996 (9,042 California tracts, SVI 2022; see reproduce_svi.py).
+
+  CDC_SVI.RPL_THEMES:
+    label: SVI overall summary percentile rank
+    provider: CDC / ATSDR
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: CDC_SVI.RPL_THEME1, relation: component, confidence: certain}
+      - {variable: CDC_SVI.RPL_THEME2, relation: component, confidence: certain}
+      - {variable: CDC_SVI.RPL_THEME3, relation: component, confidence: certain}
+      - {variable: CDC_SVI.RPL_THEME4, relation: component, confidence: certain}
+    coPublishedNonInputs:
+      - ACS.EP_NOINT
+    evidence: >
+      Percentile rank of the summed four theme rankings, themselves composed of
+      16 ACS variables. Verified against the delivered file: the SVI 2022
+      California tract CSV carries 16 EPL_* percentile-rank columns, one per
+      ranked input. Reconstructed from those 16 inputs at cross-validated
+      R2 = 0.987 (9,041 tracts; 0.993 with a longer boosting schedule).
+    correction: >
+      v0.1 recorded ACS.EP_NOINT as a `component` at `certain` confidence and
+      described the index as "24 ACS variables". Both were wrong, and from the
+      same mistake: counting the 24 EP_* columns delivered in the CSV rather
+      than the 16 that are actually ranked. The edge was removed. Note that
+      only EP_NOINT of the eight non-ranked columns is a true non-input: it
+      predicts RPL_THEMES at R2 = 0.384 alone, against 0.987 for the true
+      sixteen, whilst the seven race and ethnicity counts are components of
+      EP_MINRTY and are recorded as such. See the correction on ACS.EP_MINRTY.
+
+  CDC_PLACES.tract:
+    label: PLACES small-area health prevalence estimates, census tract
+    provider: CDC
+    measurementBasis: modelled
+    isProvidedBy: https://data.cdc.gov/resource/cwsq-ngmh.json
+    derivesFrom:
+      - {variable: BRFSS,           relation: modelled_from,     confidence: documented}
+      - {variable: ACS.EP_POV150,   relation: modelled_from,     confidence: documented}
+      - {variable: CENSUS.blocks,   relation: poststratified_on, confidence: documented}
+    evidence: >
+      Multilevel regression and poststratification. Model covariates are
+      individual age, sex, race/ethnicity and education from BRFSS, plus a
+      county-level percentage below 150% FPL from the 5-year ACS, with state
+      and county random effects, poststratified onto census-block demographics.
+      Published values are posterior means, not measurements.
+
+  CENSUS_CRE.social_vulnerability:
+    label: Census Community Resilience Estimates — Social Vulnerability Measure
+    provider: US Census Bureau — Community Resilience Estimates
+    measurementBasis: modelled
+    isProvidedBy: https://www.census.gov/programs-surveys/community-resilience-estimates.html
+    derivesFrom:
+      - {variable: ACS.EP_POV150,  relation: modelled_from,     confidence: documented}
+      - {variable: ACS.EP_SNGPNT,  relation: modelled_from,     confidence: documented}
+      - {variable: ACS.EP_CROWD,   relation: modelled_from,     confidence: documented}
+      - {variable: ACS.EP_LIMENG,  relation: modelled_from,     confidence: documented}
+      - {variable: ACS.EP_UNEMP,   relation: modelled_from,     confidence: documented}
+      - {variable: ACS.EP_DISABL,  relation: modelled_from,     confidence: documented}
+      - {variable: ACS.EP_UNINSUR, relation: modelled_from,     confidence: documented}
+      - {variable: ACS.EP_AGE65,   relation: modelled_from,     confidence: documented}
+      - {variable: ACS.EP_NOVEH,   relation: modelled_from,     confidence: documented}
+      - {variable: ACS.EP_NOINT,   relation: modelled_from,     confidence: documented}
+      - {variable: CENSUS.blocks,  relation: poststratified_on, confidence: documented}
+    evidence: >
+      Small-area estimation over individual and household level ACS internal
+      microdata, combined with the Population Estimates Program and decennial
+      census population totals (MARC and PPMF files). Ten components of social
+      vulnerability, listed verbatim in FEMA National Risk Index Technical
+      Documentation v1.20 (December 2025) section 4.1.1: income-to-poverty
+      ratio, single or zero caregiver household, unit-level crowding,
+      communication barrier, lack of employment, disability, no health
+      insurance coverage, aged 65 or older, no vehicle access, and households
+      without broadband internet access.
+    uncertainty: >
+      SCOPED. The ten components are documented and map cleanly onto ACS
+      concepts, so the ACS ancestry is solid. The exact ACS table codes behind
+      each component are not pinned here, and the CRE model is small-area
+      estimation rather than deterministic arithmetic, so these are
+      `modelled_from` rather than `component`.
+
+  FEMA_NRI.social_vulnerability:
+    label: National Risk Index — Social Vulnerability component
+    provider: FEMA
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: CENSUS_CRE.social_vulnerability, relation: identity, confidence: documented}
+    evidence: >
+      FEMA National Risk Index Technical Documentation v1.20 (December 2025)
+      section 4.1.1: "Social Vulnerability source data provider: Census
+      Community Resilience Estimates Social Vulnerability Measure." FEMA takes
+      the Census raw national percentile and its 90% confidence interval,
+      converts the interval to a one-standard-deviation interval under a normal
+      approximation, computes a dominance count of how many other communities
+      are clearly less vulnerable, and rescales that count to a percentile
+      (Appendix E). Ratings are then quintiles of that percentile.
+    correction: >
+      v0.1 recorded this as an `identity` edge to CDC_SVI.RPL_THEMES, and
+      attributed the transform to "FEMA's own scaling and a k-means clustering
+      step". Both were wrong against the current release. FEMA's own history
+      (section 2) records the sequence: HVRI SoVI, then CDC/ATSDR SVI, then the
+      Census CRE Social Vulnerability Measure from v1.20.0 onward. The CDC SVI
+      edge describes a superseded vintage. k-means (scikit-learn, n_clusters=5,
+      max_iter=500, cube-root transform) is applied to Risk and Expected Annual
+      Loss ratings; Social Vulnerability and Community Resilience ratings are
+      quintiles.
+
+  HVRI.bric:
+    label: Baseline Resilience Indicators for Communities (BRIC), FEMA-modified
+    provider: University of South Carolina — Hazards & Vulnerability Research Institute
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: ACS.EP_NOHSDP,            relation: component, confidence: documented}
+      - {variable: ACS.EP_AGE65,             relation: component, confidence: documented}
+      - {variable: ACS.EP_AGE17,             relation: component, confidence: documented}
+      - {variable: ACS.EP_NOVEH,             relation: component, confidence: documented}
+      - {variable: ACS.EP_NOINT,             relation: component, confidence: documented}
+      - {variable: ACS.EP_LIMENG,            relation: component, confidence: documented}
+      - {variable: ACS.EP_DISABL,            relation: component, confidence: documented}
+      - {variable: ACS.EP_UNINSUR,           relation: component, confidence: documented}
+      - {variable: ACS.tenure_homeownership, relation: component, confidence: documented}
+      - {variable: ACS.EP_UNEMP,             relation: component, confidence: documented}
+      - {variable: CBP.business_patterns,    relation: component, confidence: documented}
+    evidence: >
+      BRIC comprises 49 indicators across six types of resilience: social,
+      economic, community capital, institutional capacity, housing and
+      infrastructure, and environmental (FEMA NRI Technical Documentation v1.20
+      section 4.2.1). Appendix F enumerates the Social and Economic pillar
+      inputs FEMA recalculates, giving 12 variables from the ACS 5-year
+      estimates and 3 from County Business Patterns, with the Census table for
+      each: B15003 educational attainment, B01001 pre-retirement age, B25044
+      transportation access, DP04 communication capacity, B16001 English
+      language competency, B18101 disability status, B27001 health insurance
+      coverage, B25003 homeownership, and B23025 employment rate.
+    uncertainty: >
+      SCOPED. The nine ACS-backed edges above are pinned to named Census tables
+      in FEMA's Appendix F, which covers the Social and Economic pillars only.
+      The remaining four pillars draw on LEAD tool and County Health Rankings
+      data not traced here, so this list is authoritative but not exhaustive.
+    correction: >
+      v0.1 asserted two `inferred` edges, to ACS.EP_POV150 and ACS.EP_UNEMP, on
+      the reasoning that BRIC's primary source is documented as the ACS. The
+      employment edge survives. The poverty edge does not: no poverty measure
+      appears among the 12 ACS variables in FEMA's Appendix F. The edges are
+      now pinned to Census table codes and upgraded to `documented`.
+
+  FEMA_NRI.community_resilience:
+    label: National Risk Index — Community Resilience component
+    provider: FEMA
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: HVRI.bric, relation: identity, confidence: documented}
+    evidence: >
+      "Community resilience data are obtained from the University of South
+      Carolina's Hazards and Vulnerability Research Institute Baseline
+      Resilience Indicators for Communities" (NRI Technical Documentation v1.20
+      section 4.2.1). Available at county level only; census tracts inherit
+      their parent county's score.
+    uncertainty: >
+      SCOPED. `identity` describes the source of the score, not a bit-for-bit
+      republication. FEMA recalculates the Social and Economic pillars with
+      food-insecurity, racial/ethnic income-inequality and gender
+      income-inequality inputs removed, then takes national percentiles.
+
+  FEMA_NRI.expected_annual_loss:
+    label: National Risk Index — Expected Annual Loss
+    provider: FEMA
+    measurementBasis: modelled
+    derivesFrom: []
+    comment: Hazard-frequency and exposure modelling; lineage not traced here.
+
+  FEMA_NRI.risk_score:
+    label: National Risk Index — composite Risk Score
+    provider: FEMA
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: FEMA_NRI.expected_annual_loss, relation: component, confidence: certain}
+      - {variable: FEMA_NRI.social_vulnerability, relation: component, confidence: certain}
+      - {variable: FEMA_NRI.community_resilience, relation: component, confidence: certain}
+    evidence: >
+      NRI Technical Documentation v1.20 (December 2025) sections 3.1 and 4.3,
+      Equations 2 and 3. Risk Index Value = Expected Annual Loss x Community
+      Risk Factor. The Community Risk Factor is obtained by dividing the Social
+      Vulnerability Value by the Community Resilience Value to give a Community
+      Risk Ratio, then mapping the national percentile of that ratio onto a
+      triangular distribution with minimum 0.5, mode 1, and maximum 2. Ratings
+      are assigned by k-means clustering (scikit-learn, n_clusters=5,
+      max_iter=500) on cube-root-transformed values.
+    correction: >
+      v0.1 recorded this edge at `documented` with a PRECISION LIMIT note
+      claiming "the exact algebraic form could not be verified directly: FEMA's
+      methodology PDFs return HTTP 403 to automated requests", and drew a
+      general moral from it. The claim was false. The technical documentation
+      PDF returns HTTP 200 to an unauthenticated request and states the formula
+      including the triangular distribution parameters. The edges are upgraded
+      to `certain` and the moral withdrawn.
+
+  WORLDPOP.gridded_population:
+    label: WorldPop gridded population, ~100 m
+    provider: WorldPop
+    measurementBasis: modelled
+    derivesFrom:
+      - {variable: SAT.viirs_ntl,        relation: modelled_from, confidence: inferred}
+      - {variable: SAT.sentinel_landsat, relation: modelled_from, confidence: inferred}
+      - {variable: SAT.glo30_dem,        relation: modelled_from, confidence: inferred}
+    evidence: >
+      Random-forest dasymetric redistribution of census counts (Stevens et al.
+      2015). The published methods page lists the covariate classes as
+      "settlement locations, settlement extents, land cover, roads, building
+      maps, health facility locations, satellite nightlights, vegetation,
+      topography, refugee camps".
+    uncertainty: >
+      SCOPED. The covariate *classes* are documented; the specific products are
+      not. WorldPop names "satellite nightlights", "land cover" and
+      "topography" without naming VIIRS, Sentinel/Landsat or GLO-30. The three
+      edges above are therefore the manifest's best guess at which product
+      fills each class.
+    correction: >
+      v0.1 carried these three edges at `documented`. That was the same
+      standard this manifest refused to accept for HungerMap, where an unnamed
+      population-density source got the edge cut. Applying one rule to both,
+      these are `inferred`.
+
+  ALPHAEARTH.embeddings:
+    label: AlphaEarth Foundations satellite embeddings, 64-dim
+    provider: Google DeepMind
+    measurementBasis: modelled
+    derivesFrom:
+      - {variable: SAT.sentinel_landsat, relation: modelled_from, confidence: documented}
+      - {variable: SAT.palsar2,          relation: modelled_from, confidence: documented}
+      - {variable: SAT.gedi_canopy,      relation: modelled_from, confidence: documented}
+      - {variable: SAT.glo30_dem,        relation: modelled_from, confidence: documented}
+      - {variable: SAT.era5_land,        relation: modelled_from, confidence: documented}
+      - {variable: SAT.grace,            relation: modelled_from, confidence: documented}
+      - {variable: NLCD.landcover,       relation: modelled_from, confidence: documented}
+    evidence: >
+      arXiv:2507.22291 supplement sections S1.1 to S1.12 enumerate the sources:
+      Sentinel-2 optical, Sentinel-1 C-band SAR, Landsat optical and thermal,
+      ALOS PALSAR-2, ERA5-Land, GEDI, GRACE, GLO-30, NLCD land cover, and text
+      sources including Wikipedia and GBIF. Text, Wikipedia and GBIF are not
+      modelled as nodes here.
+    correction: >
+      An earlier version of this manifest listed MODIS NDVI as an input. That
+      was wrong. MODIS appears exactly once in arXiv:2507.22291, inside a GLaNCE
+      *evaluation* label set, and never as a training source. The edge was
+      removed. v0.1 also omitted GRACE and NLCD, which are documented inputs;
+      both are now present. NLCD matters in particular, because it makes any
+      NLCD-derived land-cover covariate a sibling of AlphaEarth rather than an
+      independent modality.
+
+  HUNGERMAP.live:
+    label: WFP HungerMap LIVE food-security nowcast
+    provider: World Food Programme
+    measurementBasis: modelled
+    derivesFrom:
+      - {variable: SAT.modis_ndvi,        relation: modelled_from, confidence: documented}
+      - {variable: SAT.chirps_rainfall,   relation: modelled_from, confidence: documented}
+      - {variable: WORLDBANK.food_prices, relation: modelled_from, confidence: documented}
+      - {variable: WFP.household_surveys, relation: modelled_from, confidence: documented}
+      - {variable: SAT.viirs_ntl,         relation: modelled_from, confidence: inferred}
+    evidence: >
+      Machine-learning model initially trained on data from 63 countries over a
+      14-year period, covering population density, nightlight intensity,
+      rainfall, vegetation index, conflict, market prices, macroeconomic
+      indicators and undernourishment. Rainfall and vegetation features are
+      sourced from WFP's Climate Explorer and originate from CHIRPS and MODIS
+      respectively. Primary reference: Foini et al., "Forecasting trends in food
+      security with real time data", Communications Earth & Environment, 2024
+      (https://www.nature.com/articles/s43247-024-01698-9).
+    uncertainty: >
+      SCOPED. CHIRPS and MODIS are named explicitly, so those edges are
+      documented. "Nightlight intensity" is a documented input whose sensor is
+      not named, so the VIIRS edge is `inferred`.
+    correction: >
+      An earlier version derived this from WorldPop. "Population density" is a
+      documented input but its source is not named by WFP, so that edge was
+      removed rather than guessed. v0.1 additionally cited the WFP Innovation
+      project page as the evidence for the 63-country training set and the
+      specific covariate list; that page carries neither. The citation is now
+      the peer-reviewed methods paper, which does.
+
+  KUMMU.gridded_gdp:
+    label: Gridded GDP per capita
+    provider: Kummu et al., Scientific Data 2018
+    measurementBasis: modelled
+    derivesFrom:
+      - {variable: HYDE.population_grid, relation: denominator, confidence: documented}
+    evidence: >
+      Sub-national GDP per capita (PPP) is population-weighted to national
+      totals using the HYDE 3.x gridded population dataset, then redistributed
+      onto that grid; higher-resolution years are adapted from the Global Human
+      Settlement population grid. Population is the denominator of a per-capita
+      quantity, which is what the `denominator` relation records.
+    correction: >
+      An earlier draft derived this from WorldPop and nighttime lights. Both
+      were wrong: the paper contains no reference to nighttime lights, DMSP or
+      VIIRS in its own method, and none to WorldPop at all. v0.1 then said "the
+      specific population grid was not verified, so no edge is asserted". That
+      was over-cautious. The paper names HYDE 3.x and the GHS population grid
+      directly, and the edge is now asserted.
+
+  IMD_ENGLAND.overall:
+    label: English Index of Multiple Deprivation
+    provider: UK Ministry of Housing, Communities and Local Government
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: IMD_ENGLAND.health_domain, relation: component, confidence: documented}
+    evidence: >
+      Weighted sum of seven domains built from 39 indicators, sub-domain weights
+      set by maximum-likelihood factor analysis. Health Deprivation and
+      Disability carries 13.5%, alongside Income 22.5%, Employment 22.5%,
+      Education 13.5%, and Crime, Barriers to Housing and Services, and Living
+      Environment at 9.3% each (Indices of Deprivation 2019 Technical Report,
+      chapter 4 and Appendix E).
+
+  IMD_ENGLAND.health_domain:
+    label: IMD — Health Deprivation and Disability domain
+    provider: UK MHCLG
+    measurementBasis: composite
+    derivesFrom: []
+    comment: >
+      Relevant because IMD is routinely used as a covariate to predict health
+      outcomes, while containing a health deprivation domain by construction.
