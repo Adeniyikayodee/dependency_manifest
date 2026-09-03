@@ -1,5 +1,7 @@
 # derives-from
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22274757.svg)](https://doi.org/10.5281/zenodo.22274757)
+
 I have written a dependency manifest for public statistical data, together with a
 linter that reads it.
 
@@ -353,6 +355,28 @@ know.
 * English Indices of Deprivation 2019, <https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019>
 * Data Commons data model, <https://docs.datacommons.org/data_model.html>
 * Paper used as the worked example, <https://arxiv.org/abs/2608.26088>
+
+## Citation
+
+Every release is archived on Zenodo, and the identifier below always resolves to
+the most recent version.
+
+> Adeniyi, K. (2026). *derives-from: a derivation manifest for public statistical
+> data, with a lineage linter* (Version 1.0.0) [Software].
+> Zenodo. https://doi.org/10.5281/zenodo.22274757
+
+```bibtex
+@software{adeniyi_derives_from_2026,
+  author    = {Adeniyi, Kayode},
+  title     = {derives-from: a derivation manifest for public statistical
+               data, with a lineage linter},
+  year      = {2026},
+  version   = {1.0.0},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.22274757},
+  url       = {https://github.com/Adeniyikayodee/dependency_manifest}
+}
+```
 
 ## Licence
 
