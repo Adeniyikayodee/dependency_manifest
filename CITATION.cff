@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this manifest or linter, please cite it as below."
+type: software
+title: "derives-from: a derivation manifest for public statistical data, with a lineage linter"
+abstract: >-
+  A machine readable record of what public statistical products are computed
+  from, covering 60 data products and 75 derivation edges, together with a
+  linter that refuses any covariate lying on a derivation path to or from the
+  prediction target, and a script that reproduces the leakage demonstration
+  from the live CDC Social Vulnerability Index file.
+authors:
+  - family-names: Adeniyi
+    given-names: Kayode
+    affiliation: Independent researcher
+version: 1.0.0
+date-released: "2026-09-03"
+license: CC0-1.0
+repository-code: "https://github.com/Adeniyikayodee/dependency_manifest"
+keywords:
+  - data provenance
+  - data lineage
+  - target leakage
+  - feature selection
+  - official statistics
+  - reproducibility
