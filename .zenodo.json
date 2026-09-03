@@ -1,0 +1,38 @@
+{
+  "upload_type": "software",
+  "title": "derives-from: a derivation manifest for public statistical data, with a lineage linter",
+  "version": "1.0.0",
+  "language": "eng",
+  "access_right": "open",
+  "license": "CC0-1.0",
+  "creators": [
+    {
+      "name": "Adeniyi, Kayode",
+      "affiliation": "Independent researcher"
+    }
+  ],
+  "description": "<p>A great deal of public data is the output of a calculation performed on other public data. CDC's Social Vulnerability Index is a percentile rank built from sixteen American Community Survey variables. FEMA's National Risk Index derives its social vulnerability layer from the Census Bureau's Community Resilience Estimates. The agencies document all of this openly, and no catalogue records any of it in a machine readable form, so a model looking for covariates can collect variables that its own target was assembled from.</p><p>This release contains three things. <code>derivation-manifest.yaml</code> records 60 data products and 75 derivation edges across US and global statistical infrastructure, with the evidence and confidence level for each edge. <code>lint_lineage.py</code> walks that graph in both directions from a stated target and refuses any covariate that is an ancestor or a descendant of it, validating the manifest itself before it does so. <code>reproduce_svi.py</code> downloads the live CDC SVI file and reproduces the leakage demonstration from scratch, recovering RPL_THEME1 from its five Theme-1 ACS columns at R2 = 0.998 across 9,041 California tracts.</p><p>The repository also documents a worked example against a published Google Research paper, arXiv:2608.26088, whose stated leakage rule keys off the mathematical definition of the prediction target and whose covariate lists include components of the target's own source measure.</p>",
+  "keywords": [
+    "data provenance",
+    "data lineage",
+    "target leakage",
+    "feature selection",
+    "official statistics",
+    "reproducibility",
+    "social vulnerability index",
+    "American Community Survey",
+    "machine learning evaluation"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "arXiv:2608.26088",
+      "relation": "references",
+      "scheme": "arxiv"
+    },
+    {
+      "identifier": "https://github.com/Adeniyikayodee/dependency_manifest",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
