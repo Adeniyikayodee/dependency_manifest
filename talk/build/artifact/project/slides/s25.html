@@ -1,0 +1,21 @@
+<section id="s25" style="background:#ffffff;padding:0;display:flex">
+<img src="/_blob/cbdbee5e425d8c5d8113a78f3340c114" alt="Live: watching it go red. Terminal output of the lineage linter: verdict FAIL, poverty is an ancestor of the target by one route, unemployment by two routes, exit code 1" style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:contain">
+<aside>[28:00 · 2 min]
+[LIVE DEMO. Terminal open, font large, already in the repo folder.]
+
+TYPE:
+python3 lint_lineage.py --target FEMA_NRI.risk_score --covariates ACS.EP_POV150 ACS.EP_UNEMP
+
+SAY while it prints:
+FAIL. Two errors. Poverty: one route. Unemployment: two routes.
+The same two routes we drew by hand.
+
+TYPE: echo $?
+SAY: Exit code 1. In CI, that’s a red build.
+
+BONUS: rerun with a typo, EP_UNEMPP. Still FAIL. Typos can’t sneak through.
+
+[IF THE DEMO BREAKS] Stay calm: “This is exactly what it prints.” Point at the screenshot.
+
+NEXT: time to admit where we got it wrong.</aside>
+</section>

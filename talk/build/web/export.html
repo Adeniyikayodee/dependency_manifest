@@ -1,0 +1,33 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Export</title>
+<script>window.EXCALIDRAW_ASSET_PATH = "https://unpkg.com/@excalidraw/excalidraw@0.17.6/dist/";</script>
+<style>
+@font-face{font-family:"Virgil";src:url("https://unpkg.com/@excalidraw/excalidraw@0.17.6/dist/excalidraw-assets/Virgil.woff2")}
+@font-face{font-family:"Cascadia";src:url("https://unpkg.com/@excalidraw/excalidraw@0.17.6/dist/excalidraw-assets/Cascadia.woff2")}
+body{font-family:sans-serif}
+</style>
+<script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@excalidraw/excalidraw@0.17.6/dist/excalidraw.production.min.js"></script>
+</head><body><div id="s">loading</div><div style="font-family:Virgil">Virgil</div><div style="font-family:Cascadia">Cascadia</div>
+<script>
+window.runExport = async function () {
+  const st = document.getElementById('s');
+  await document.fonts.load('40px Virgil'); await document.fonts.load('40px Cascadia'); await document.fonts.ready;
+  const scene = await (await fetch('scene.excalidraw')).json();
+  const els = scene.elements.filter(e => !e.isDeleted);
+  const frames = els.filter(e => e.type === 'frame');
+  let n = 0;
+  for (const fr of frames) {
+    const blob = await ExcalidrawLib.exportToBlob({
+      elements: els, files: scene.files, exportingFrame: fr, exportPadding: 0,
+      appState: { exportBackground: true, viewBackgroundColor: '#ffffff', exportWithDarkMode: false, exportScale: 1, frameRendering: { enabled: true, name: false, outline: false, clip: true } },
+      mimeType: 'image/png', getDimensions: (w, h) => ({ width: 3840, height: 2160, scale: 3840 / w }),
+    });
+    const name = 'slide-' + String(++n).padStart(2, '0') + '.png';
+    await fetch('/save/' + name, { method: 'POST', body: blob });
+    st.textContent = name;
+  }
+  return 'exported ' + n;
+};
+document.getElementById('s').textContent = typeof ExcalidrawLib;
+</script></body></html>
