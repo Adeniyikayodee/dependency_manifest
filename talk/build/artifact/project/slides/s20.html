@@ -1,21 +1,29 @@
-<section id="s20" style="background:#ffffff;padding:0;display:flex">
-<img src="/_blob/12087c0d7a17aed92ad3563decc94d77" alt="Step 1, write it down: a YAML manifest entry saying FEMA social vulnerability derives from the Census estimate, relation identity, confidence documented. A lock file for data" style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:contain">
-<aside>[22:00 · 1.5 min]
-SAY:
-Step one: write it down.
-Think of it as a lock file for data.
-
-One entry per dataset: what was it made from?
-This entry says FEMA’s social vulnerability is the Census estimate,
-republished under a new name.
-
-Two small extras make it honest.
-Each box says what kind of number it is:
-counted, predicted by a model, or plain arithmetic.
-Each arrow says how sure we are:
-certain, documented in the agency’s method, or just inferred.
-
-Plain YAML. In the repo. Reviewed in pull requests like any other code.
-
-NEXT: quick game.</aside>
+<section id="s20" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#fff8e7">
+  <h2 style="font-family:Caveat, 'Comic Sans MS', serif; font-size:104px; font-weight:700; line-height:1; color:#1b1b1f">Step 1: write the recipe down</h2>
+  <div style="display:flex; flex-direction:row; gap:72px; align-items:center">
+    <div style="width:900px; display:flex; flex-direction:column; gap:22px; padding:40px 48px; background:#ffffff; border:4px solid #1b1b1f; border-radius:10px; box-shadow:10px 10px 0 #1b1b1f; transform:rotate(-1.5deg)">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:700; letter-spacing:3px; color:#e03131">RECIPE CARD</p>
+      <p style="font-family:Caveat, 'Comic Sans MS', serif; font-size:68px; font-weight:700; line-height:1.05; color:#1b1b1f">FEMA social vulnerability</p>
+      <x-shape kind="line" style="height:3px; border:3px solid #ced4da"></x-shape>
+      <div style="display:flex; flex-direction:row; gap:24px">
+        <p style="width:250px; font-family:Nunito, Arial, sans-serif; font-size:32px; color:#7a7464">made from</p>
+        <p style="flex:1; font-family:Nunito, Arial, sans-serif; font-size:32px; font-weight:800; color:#1b1b1f">Census resilience estimate</p>
+      </div>
+      <div style="display:flex; flex-direction:row; gap:24px">
+        <p style="width:250px; font-family:Nunito, Arial, sans-serif; font-size:32px; color:#7a7464">kind of number</p>
+        <p style="flex:1; font-family:Nunito, Arial, sans-serif; font-size:32px; font-weight:800; color:#1b1b1f">a mix of survey answers</p>
+      </div>
+      <div style="display:flex; flex-direction:row; gap:24px">
+        <p style="width:250px; font-family:Nunito, Arial, sans-serif; font-size:32px; color:#7a7464">how sure</p>
+        <p style="flex:1; font-family:Nunito, Arial, sans-serif; font-size:32px; font-weight:800; color:#1b1b1f">written in FEMA’s own method</p>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:28px; flex:1">
+      <p style="font-family:Caveat, 'Comic Sans MS', serif; font-size:56px; font-weight:700; line-height:1.1; color:#1b1b1f">One card per dataset: what was it made from?</p>
+      <p style="font-family:Nunito, Arial, sans-serif; font-size:32px; line-height:1.4; color:#5c574a">We call the stack of cards a <b>derivation manifest</b>. It lives with our code, and we review it like code.</p>
+    </div>
+  </div>
+  <p style="position:absolute; top:770px; left:1260px; width:480px; padding:18px 26px; font-family:Caveat, 'Comic Sans MS', serif; font-size:52px; font-weight:700; line-height:1.1; color:#1b1b1f; background:#f7df1e; border:3px solid #1b1b1f; border-radius:6px 14px 8px 16px; box-shadow:6px 6px 0 #1b1b1f; transform:rotate(-4deg)">a lock file for data 🔒</p>
+  <p id="e3-zer5gg" style="position:absolute; right:128px; bottom:56px; width:120px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; text-align:right; color:#7a7464">24</p>
+  <aside>[1 min] SAY: So how are we managing it? Step one: write the recipe down. For every dataset we use, we fill in one card. What was it made from? What kind of number is it, counted, predicted by a model, or a mix? And how sure are we: certain, written in the agency’s own method, or just our guess? This card says FEMA’s social vulnerability is really the Census estimate under a new name. Exactly the thing that tripped up the paper we just saw. The stack of cards is called a derivation manifest. Think of it as a lock file for data. It sits in our repo, and changes go through pull requests like any other code. NEXT: step two, walk it.</aside>
 </section>

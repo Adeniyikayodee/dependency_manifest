@@ -11,10 +11,16 @@ Talk for JS Monthly London #212, 12 Nov 2026, Red Dog Saloon Hoxton Square.
 - Slide images: `slides-png/`
 - Charts and the QR code: `images/`
 
+The online deck is the current version: 28 slides telling the GRMI Katcha
+story, from floods and fieldwork to the river that sat on both sides of the
+model. `artifact/` below mirrors it. The PowerPoint, PNGs and notes file are
+from the first draft.
+
 ## To do before the talk
 
-- Add the lab line on slide 6.
-- Rehearse the live demo on slide 25.
+- Check the period on slide 2. The 44% figure covers 2000 to 2019.
+- Check slide 3 against its source, which covers 1990 to 2022.
+- Check that slide 15 matches how the flood input and label were built.
 
 ## Rebuilding
 

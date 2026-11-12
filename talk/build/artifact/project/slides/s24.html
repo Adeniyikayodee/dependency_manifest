@@ -1,15 +1,6 @@
-<section id="s24" style="background:#ffffff;padding:0;display:flex">
-<img src="/_blob/dba9b127a3ee39ee398b55ee650a1408" alt="Step 4, run it on every push: git push, CI, lineage check, then either leak (red) or clear (green). About 0.1 seconds, no network" style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:contain">
-<aside>[27:00 · 1 min]
-SAY:
-Step four: put it in CI, right next to the tests.
-Every push, the lineage check runs.
-It takes about a tenth of a second. No network.
-
-Leak found: build goes red.
-Broken manifest: build goes red too.
-And a typo in a column name? Also red.
-A name the tool doesn’t know can never be cleared.
-
-NEXT: let’s watch it go red for real.</aside>
+<section id="s24" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; padding:128px 128px 160px; background:#fff8e7">
+  <h2 style="font-family:Caveat, 'Comic Sans MS', serif; font-size:104px; font-weight:700; line-height:1; color:#1b1b1f">Step 3: run it in CI on every push</h2>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1664 600" aria-label="git push, then CI, then the lineage linter; result stamped LEAK FOUND, build failing; about 0.1 seconds, runs offline" style="position:absolute; top:280px; left:128px; width:1664px; height:600px"><defs><marker id="h24" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1B1B1F"/></marker></defs><rect x="170" y="90" width="330" height="130" rx="16" fill="#FFFFFF" stroke="#1B1B1F" stroke-width="5"/><text x="335" y="172" text-anchor="middle" font-family="Menlo,monospace" font-weight="700" font-size="52" fill="#1B1B1F">git push</text><rect x="640" y="90" width="170" height="130" rx="16" fill="#FFFFFF" stroke="#1B1B1F" stroke-width="5"/><text x="725" y="172" text-anchor="middle" font-family="Menlo,monospace" font-weight="700" font-size="52" fill="#1B1B1F">CI</text><rect x="950" y="90" width="520" height="130" rx="16" fill="#FFFFFF" stroke="#1B1B1F" stroke-width="5"/><text x="1210" y="172" text-anchor="middle" font-family="Menlo,monospace" font-weight="700" font-size="52" fill="#1B1B1F">lineage linter</text><line x1="505" y1="155" x2="630" y2="155" stroke="#1B1B1F" stroke-width="8" marker-end="url(#h24)"/><line x1="815" y1="155" x2="940" y2="155" stroke="#1B1B1F" stroke-width="8" marker-end="url(#h24)"/><g transform="rotate(-3 832 360)"><rect x="257" y="300" width="1150" height="120" rx="18" fill="none" stroke="#E03131" stroke-width="6"/><text x="832" y="382" text-anchor="middle" font-family="Menlo,monospace" font-weight="800" font-size="60" fill="#E03131">✕ LEAK FOUND · build failing</text></g><text x="832" y="510" text-anchor="middle" font-family="Arial,sans-serif" font-size="36" fill="#666666">about 0.1 seconds · runs offline</text></svg>
+  <p id="e3-10ipk8c" style="position:absolute; right:128px; bottom:56px; width:120px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; text-align:right; color:#7a7464">26</p>
+  <aside>[1 min] SAY: Step three: put it in CI, right next to the tests. Every push, the lineage check runs. It takes about a tenth of a second, offline. Leak found: build goes red. Broken manifest: build goes red too. And a typo in a column name? Also red. An unknown name always fails. NEXT: so, back to Katcha.</aside>
 </section>

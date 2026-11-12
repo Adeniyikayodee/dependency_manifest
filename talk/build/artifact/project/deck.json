@@ -1,1 +1,90 @@
-{"v":4,"createdOnFiles":{"v":1,"at":"2026-11-08T17:20:00Z"},"lists":"css","title":"The Dependency Graph Your Tests Can’t See","order":["s01","s02","s03","s04","s05","s06","s07","s08","s09","s10","s11","s12","s13","s14","s15","s16","s17","s18","s19","s20","s21","s22","s23","s24","s25","s26","s27","s28","s29"],"sections":{"story":{"description":"The story: a circular import, BMI, and the 0.998 score that fooled us.","start":"s01"},"reading":{"description":"Reading the graph: lock files, a real FEMA chain, and three shapes to look for.","start":"s13"},"care":{"description":"Looking after it: write it down, walk it, four answers, CI, and our own mistake.","start":"s20"},"close":{"description":"Close: is this BMI, and thank you.","start":"s28"}},"faces":{"caveat":{"family":"Caveat","href":"https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap"}},"designSystems":[]}
+{
+  "v": 4,
+  "attachments": {},
+  "createdOnFiles": {
+    "at": "2026-11-08T17:20:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "faces": {
+    "caveat": {
+      "family": "Caveat",
+      "href": "https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap"
+    },
+    "jetbrains-mono": {
+      "family": "JetBrains Mono",
+      "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap"
+    },
+    "nunito": {
+      "family": "Nunito",
+      "href": "https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap"
+    }
+  },
+  "lists": "css",
+  "order": [
+    "s01",
+    "stakes",
+    "cost",
+    "me",
+    "career",
+    "ops",
+    "history",
+    "gallery",
+    "field",
+    "partners",
+    "project",
+    "datasets",
+    "s04",
+    "toogood",
+    "river",
+    "storywrap",
+    "s11",
+    "cases1",
+    "cases2",
+    "cases3",
+    "s15",
+    "s16",
+    "s17",
+    "s20",
+    "s22",
+    "s24",
+    "s28",
+    "thanks"
+  ],
+  "sections": {
+    "backup": {
+      "before": null,
+      "description": "Backup slides for questions.",
+      "seq": 0,
+      "start": null
+    },
+    "close": {
+      "description": "Close: did it just measure the answer?",
+      "start": "s28"
+    },
+    "everywhere": {
+      "description": "It happens everywhere: 329 papers, a Google Research paper, the FEMA recipe and your own code.",
+      "start": "cases1"
+    },
+    "fix": {
+      "before": null,
+      "description": "How we manage it: three shapes, a recipe card per dataset, walk it, run it in CI.",
+      "start": "s20"
+    },
+    "map": {
+      "before": "s20",
+      "description": "The missing map: JS tools catch loops because the graph is written down.",
+      "seq": 0,
+      "start": null
+    },
+    "project": {
+      "description": "The project: flood-proof rice, the public data behind it, a 99.9 score and the river on both sides.",
+      "start": "project"
+    },
+    "why": {
+      "description": "Why it matters: floods worldwide, where our team works, who we are and who we work with.",
+      "start": "s01"
+    }
+  },
+  "title": "The Dependency Graph Your Tests Can’t See"
+}
